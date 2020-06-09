@@ -1,0 +1,30 @@
+format_version: 3
+pipelines:
+  gocd-first-pipeline:
+    group: My-Pipelines
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git:
+        git: git@github.com:satyaelipe/gocd.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - Test-and-Report:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          Test-and-Report:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - Report
+                command: Test
+                run_if: passed
